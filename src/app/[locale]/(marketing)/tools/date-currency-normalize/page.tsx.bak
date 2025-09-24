@@ -1,0 +1,418 @@
+import type { Metadata } from 'next';
+import { setRequestLocale } from 'next-intl/server';
+import { ToolWorkbench } from '@/components/ToolWorkbench';
+import { SEO_KEYWORDS_CORE, SEO_KEYWORDS_NORMALIZE } from '@/lib/seo-keywords';
+
+type IToolProps = {
+  params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: 'Excel日期金额格式标准化工具 - 批量统一格式 | SheetAlly',
+    description: 'Excel日期格式不统一？金额格式五花八门？一键统一为标准格式。支持多种日期格式识别、货币符号清理、千分位处理，告别格式混乱。',
+    keywords: [...SEO_KEYWORDS_CORE, ...SEO_KEYWORDS_NORMALIZE],
+    openGraph: {
+      title: 'Excel日期金额格式标准化工具 - 批量统一格式',
+      description: 'Excel日期金额格式不统一？一键标准化处理。支持多种格式识别，告别手动调整的烦恼。',
+      type: 'website',
+      url: 'https://sheetally.com/tools/date-currency-normalize',
+      siteName: 'SheetAlly',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Excel日期金额格式标准化工具',
+      description: 'Excel日期金额格式一键标准化。',
+    },
+    alternates: {
+      canonical: 'https://sheetally.com/tools/date-currency-normalize',
+    },
+  };
+}
+
+export default async function DateCurrencyNormalize(props: IToolProps) {
+  const { locale } = await props.params;
+  setRequestLocale(locale);
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8 text-center">
+          <h1 className="mb-4 text-4xl font-bold text-gray-900">
+            Excel日期金额格式标准化：一键统一混乱格式，告别手动调整
+          </h1>
+          <p className="mx-auto max-w-3xl text-xl text-gray-600">
+            解决Excel中日期格式五花八门、金额符号不统一的痛点。
+            智能识别多种格式，批量转换为标准格式，让数据整齐规范，便于后续分析计算。
+          </p>
+        </div>
+
+        {/* 格式混乱痛点展示 */}
+        <div className="mb-8 rounded-lg bg-white p-6 shadow-md">
+          <h2 className="mb-4 text-2xl font-semibold text-gray-800">
+            解决Excel格式混乱的6大痛点
+          </h2>
+          <div className="grid gap-8 md:grid-cols-2">
+            <div>
+              <h3 className="mb-4 flex items-center text-lg font-semibold text-red-600">
+                📅 日期格式混乱
+              </h3>
+              <div className="space-y-3">
+                <div className="border-l-4 border-red-400 bg-red-50 p-3">
+                  <p className="mb-1 text-sm font-medium text-red-800">常见问题：</p>
+                  <ul className="space-y-1 text-sm text-red-700">
+                    <li>• "2023年5月1日" vs "05/01/2023" vs "May 1, 2023"</li>
+                    <li>• 文本格式日期无法参与计算和排序</li>
+                    <li>• 不同地区日期格式标准不统一</li>
+                  </ul>
+                </div>
+                <div className="border-l-4 border-green-400 bg-green-50 p-3">
+                  <p className="mb-1 text-sm font-medium text-green-800">解决方案：</p>
+                  <ul className="space-y-1 text-sm text-green-700">
+                    <li>• 智能识别各种日期格式</li>
+                    <li>• 统一转换为YYYY-MM-DD格式</li>
+                    <li>• 设置为Excel日期类型便于计算</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3 className="mb-4 flex items-center text-lg font-semibold text-red-600">
+                💰 金额格式杂乱
+              </h3>
+              <div className="space-y-3">
+                <div className="border-l-4 border-red-400 bg-red-50 p-3">
+                  <p className="mb-1 text-sm font-medium text-red-800">常见问题：</p>
+                  <ul className="space-y-1 text-sm text-red-700">
+                    <li>• "￥1,234.00" vs "$5.6K" vs "€100"</li>
+                    <li>• 千分位分隔符影响数值计算</li>
+                    <li>• 货币符号导致无法求和统计</li>
+                  </ul>
+                </div>
+                <div className="border-l-4 border-green-400 bg-green-50 p-3">
+                  <p className="mb-1 text-sm font-medium text-green-800">解决方案：</p>
+                  <ul className="space-y-1 text-sm text-green-700">
+                    <li>• 自动识别并去除货币符号</li>
+                    <li>• 处理千分位和单位缩写</li>
+                    <li>• 转换为纯数值便于计算</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 支持的格式类型 */}
+        <div className="mb-8 rounded-lg bg-white p-6 shadow-md">
+          <h2 className="mb-6 text-2xl font-semibold text-gray-800">
+            支持的格式类型
+          </h2>
+          <div className="grid gap-8 md:grid-cols-2">
+            <div>
+              <h3 className="mb-4 flex items-center text-lg font-semibold text-blue-600">
+                📅 日期格式识别
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="mb-2 font-medium">中文格式：</h4>
+                  <div className="rounded bg-gray-100 p-3 text-sm">
+                    <div className="grid grid-cols-2 gap-2">
+                      <span>2023年5月1日</span>
+                      <span className="text-green-600">→ 2023-05-01</span>
+                      <span>23年5月1号</span>
+                      <span className="text-green-600">→ 2023-05-01</span>
+                      <span>五月一日</span>
+                      <span className="text-green-600">→ 2023-05-01</span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="mb-2 font-medium">英文格式：</h4>
+                  <div className="rounded bg-gray-100 p-3 text-sm">
+                    <div className="grid grid-cols-2 gap-2">
+                      <span>May 1, 2023</span>
+                      <span className="text-green-600">→ 2023-05-01</span>
+                      <span>01 May 2023</span>
+                      <span className="text-green-600">→ 2023-05-01</span>
+                      <span>1-May-23</span>
+                      <span className="text-green-600">→ 2023-05-01</span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="mb-2 font-medium">数值格式：</h4>
+                  <div className="rounded bg-gray-100 p-3 text-sm">
+                    <div className="grid grid-cols-2 gap-2">
+                      <span>05/01/2023</span>
+                      <span className="text-green-600">→ 2023-05-01</span>
+                      <span>2023-5-1</span>
+                      <span className="text-green-600">→ 2023-05-01</span>
+                      <span>20230501</span>
+                      <span className="text-green-600">→ 2023-05-01</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3 className="mb-4 flex items-center text-lg font-semibold text-green-600">
+                💰 金额格式处理
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="mb-2 font-medium">货币符号：</h4>
+                  <div className="rounded bg-gray-100 p-3 text-sm">
+                    <div className="grid grid-cols-2 gap-2">
+                      <span>￥1,234.00</span>
+                      <span className="text-green-600">→ 1234.00</span>
+                      <span>$5,678.90</span>
+                      <span className="text-green-600">→ 5678.90</span>
+                      <span>€999.99</span>
+                      <span className="text-green-600">→ 999.99</span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="mb-2 font-medium">单位缩写：</h4>
+                  <div className="rounded bg-gray-100 p-3 text-sm">
+                    <div className="grid grid-cols-2 gap-2">
+                      <span>5.6K</span>
+                      <span className="text-green-600">→ 5600</span>
+                      <span>1.2万</span>
+                      <span className="text-green-600">→ 12000</span>
+                      <span>3.5M</span>
+                      <span className="text-green-600">→ 3500000</span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="mb-2 font-medium">特殊格式：</h4>
+                  <div className="rounded bg-gray-100 p-3 text-sm">
+                    <div className="grid grid-cols-2 gap-2">
+                      <span>(1,000)</span>
+                      <span className="text-green-600">→ -1000</span>
+                      <span>100%</span>
+                      <span className="text-green-600">→ 1.00</span>
+                      <span>十万</span>
+                      <span className="text-green-600">→ 100000</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 使用场景案例 */}
+        <div className="mb-8 rounded-lg bg-white p-6 shadow-md">
+          <h2 className="mb-4 text-2xl font-semibold text-gray-800">
+            典型使用场景
+          </h2>
+          <div className="space-y-6">
+            <div className="rounded-lg border border-gray-200 p-4">
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0 rounded-lg bg-blue-100 p-3">
+                  <svg className="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="mb-2 text-lg font-semibold">📊 财务报表标准化</h3>
+                  <p className="mb-3 text-gray-600">
+                    不同部门上报的财务数据格式不统一，需要标准化后才能进行汇总分析。
+                  </p>
+                  <div className="rounded-lg bg-gray-50 p-4">
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div>
+                        <h4 className="mb-2 font-medium text-red-600">处理前（混乱格式）：</h4>
+                        <ul className="space-y-1 text-sm">
+                          <li>日期：2023年5月1日、05/01/2023、May 1</li>
+                          <li>金额：￥1,234、$5.6K、€100.00</li>
+                          <li>状态：已完成、进行中、未开始</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <h4 className="mb-2 font-medium text-green-600">处理后（标准格式）：</h4>
+                        <ul className="space-y-1 text-sm">
+                          <li>日期：2023-05-01、2023-05-01、2023-05-01</li>
+                          <li>金额：1234、5600、100.00</li>
+                          <li>便于透视表和图表分析</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-gray-200 p-4">
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0 rounded-lg bg-green-100 p-3">
+                  <svg className="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="mb-2 text-lg font-semibold">🛍️ 电商数据清洗</h3>
+                  <p className="mb-3 text-gray-600">
+                    从不同平台导出的销售数据格式各异，需要统一后进行数据分析。
+                  </p>
+                  <div className="rounded-lg bg-gray-50 p-4">
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div>
+                        <h4 className="mb-2 font-medium text-red-600">多平台格式差异：</h4>
+                        <ul className="space-y-1 text-sm">
+                          <li>淘宝：2023-05-01 15:30:45</li>
+                          <li>京东：2023年5月1日</li>
+                          <li>拼多多：05/01/2023</li>
+                          <li>价格：¥99.9、99.90元、￥100</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <h4 className="mb-2 font-medium text-green-600">统一后便于分析：</h4>
+                        <ul className="space-y-1 text-sm">
+                          <li>日期：统一为2023-05-01</li>
+                          <li>金额：统一为数值格式</li>
+                          <li>便于按日期、价格区间分析</li>
+                          <li>支持透视表统计</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-gray-200 p-4">
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0 rounded-lg bg-purple-100 p-3">
+                  <svg className="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="mb-2 text-lg font-semibold">🏢 企业数据整合</h3>
+                  <p className="mb-3 text-gray-600">
+                    整合来自不同系统、不同时期的企业数据，为BI分析做准备。
+                  </p>
+                  <div className="rounded-lg bg-gray-50 p-4">
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div>
+                        <h4 className="mb-2 font-medium text-red-600">系统差异：</h4>
+                        <ul className="space-y-1 text-sm">
+                          <li>ERP系统：20230501、1234.56</li>
+                          <li>CRM系统：2023/5/1、￥1,234.56</li>
+                          <li>Excel手工：2023年5月1日、1,234元</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <h4 className="mb-2 font-medium text-green-600">标准化收益：</h4>
+                        <ul className="space-y-1 text-sm">
+                          <li>数据仓库导入顺畅</li>
+                          <li>BI工具识别准确</li>
+                          <li>报表计算正确</li>
+                          <li>数据质量提升</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 工具操作区域 */}
+        <ToolWorkbench />
+
+        {/* 智能识别规则 */}
+        <div className="mt-8 rounded-lg bg-white p-6 shadow-md">
+          <h2 className="mb-4 text-2xl font-semibold text-gray-800">
+            智能识别规则说明
+          </h2>
+          <div className="grid gap-8 md:grid-cols-2">
+            <div>
+              <h3 className="mb-3 text-lg font-semibold text-blue-600">📅 日期识别逻辑</h3>
+              <div className="space-y-3">
+                <div>
+                  <h4 className="mb-1 font-medium">1. 格式检测：</h4>
+                  <p className="text-sm text-gray-600">
+                    自动识别ISO格式、中文格式、英文格式、数字格式等常见日期表示
+                  </p>
+                </div>
+                <div>
+                  <h4 className="mb-1 font-medium">2. 歧义处理：</h4>
+                  <p className="text-sm text-gray-600">
+                    对于01/03/04这类可能有歧义的格式，根据数据整体特征智能判断
+                  </p>
+                </div>
+                <div>
+                  <h4 className="mb-1 font-medium">3. 失败样本：</h4>
+                  <p className="text-sm text-gray-600">
+                    无法识别的日期格式会保留原值并标记为"不确定样本"
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3 className="mb-3 text-lg font-semibold text-green-600">💰 金额识别逻辑</h3>
+              <div className="space-y-3">
+                <div>
+                  <h4 className="mb-1 font-medium">1. 符号识别：</h4>
+                  <p className="text-sm text-gray-600">
+                    识别￥、$、€、£等常见货币符号，以及中文"元"、"万"等单位
+                  </p>
+                </div>
+                <div>
+                  <h4 className="mb-1 font-medium">2. 格式清理：</h4>
+                  <p className="text-sm text-gray-600">
+                    自动去除千分位分隔符、括号表示负数、百分号等格式标记
+                  </p>
+                </div>
+                <div>
+                  <h4 className="mb-1 font-medium">3. 单位换算：</h4>
+                  <p className="text-sm text-gray-600">
+                    自动处理K(千)、M(百万)、万、亿等单位缩写的数值换算
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* FAQ */}
+        <div className="mt-8 rounded-lg bg-white p-6 shadow-md">
+          <h2 className="mb-6 text-2xl font-semibold text-gray-800">
+            常见问题
+          </h2>
+          <div className="space-y-4">
+            <div>
+              <h3 className="mb-2 font-semibold">Q: 如何处理无法识别的日期格式？</h3>
+              <p className="text-gray-600">
+                A: 系统会将无法识别的日期保留原值，并在"不确定样本"中列出。您可以查看这些样本，手动调整格式或提供示例供系统学习。
+              </p>
+            </div>
+            <div>
+              <h3 className="mb-2 font-semibold">Q: 金额中的负数如何表示？</h3>
+              <p className="text-gray-600">
+                A: 支持多种负数表示方法：-1000、(1000)、1000-等，都会正确识别为负数。
+              </p>
+            </div>
+            <div>
+              <h3 className="mb-2 font-semibold">Q: 可以自定义输出格式吗？</h3>
+              <p className="text-gray-600">
+                A: 可以。日期可以选择YYYY-MM-DD、DD/MM/YYYY等格式；金额可以选择保留小数位数、是否添加千分位等。
+              </p>
+            </div>
+            <div>
+              <h3 className="mb-2 font-semibold">Q: 处理大量数据时性能如何？</h3>
+              <p className="text-gray-600">
+                A: 系统对大数据量进行了优化，可以快速处理数万行数据。超大文件会显示处理进度，并支持后台处理。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

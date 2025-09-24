@@ -1,0 +1,6 @@
+docs/
+.next/
+node_modules/
+migrations/
+.vercel/
+*.md

@@ -1,0 +1,353 @@
+import type { Metadata } from 'next';
+import { setRequestLocale } from 'next-intl/server';
+import Link from 'next/link';
+import { ToolWorkbench } from '@/components/ToolWorkbench';
+
+type IBlogPostProps = {
+  params: Promise<{ locale: string; slug: string }>;
+};
+
+export async function generateMetadata(props: IBlogPostProps): Promise<Metadata> {
+  const { slug } = await props.params;
+
+  // 这里可以根据slug获取具体文章信息
+  const title = 'Excel去重但要保留最新记录？这个AI工具3秒搞定';
+  const description = '告别Excel原生删除重复项的限制，学会智能去重+数据聚合。支持按日期、版本等字段保留最新记录，同时自动汇总其他列数据。';
+
+  return {
+    title: `${title} | SheetAlly博客`,
+    description,
+    keywords: 'Excel去重保留最新,Excel删除重复项,Excel去重聚合,Excel重复数据处理,Excel数据去重教程,Excel去重技巧',
+    openGraph: {
+      title,
+      description,
+      type: 'article',
+      url: `https://sheetally.com/blog/${slug}`,
+      siteName: 'SheetAlly',
+      publishedTime: '2024-01-15T00:00:00.000Z',
+      authors: ['SheetAlly团队'],
+    },
+    alternates: {
+      canonical: `https://sheetally.com/blog/${slug}`,
+    },
+  };
+}
+
+export default async function BlogPost(props: IBlogPostProps) {
+  const { locale } = await props.params;
+  setRequestLocale(locale);
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
+        {/* 面包屑导航 */}
+        <nav className="mb-8">
+          <ol className="flex items-center space-x-2 text-sm text-gray-500">
+            <li><Link href="/" className="hover:text-blue-600">首页</Link></li>
+            <li><span className="mx-2">/</span></li>
+            <li><Link href="/blog" className="hover:text-blue-600">博客</Link></li>
+            <li><span className="mx-2">/</span></li>
+            <li className="text-gray-900">Excel去重保留最新记录教程</li>
+          </ol>
+        </nav>
+
+        <article className="mx-auto max-w-4xl">
+          {/* 文章头部 */}
+          <header className="mb-8">
+            <div className="mb-4">
+              <span className="rounded bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800">
+                数据去重
+              </span>
+            </div>
+            <h1 className="mb-4 text-4xl font-bold text-gray-900">
+              Excel去重但要保留最新记录？这个AI工具3秒搞定
+            </h1>
+            <div className="flex items-center text-sm text-gray-500">
+              <span>发布时间：2024年1月15日</span>
+              <span className="mx-3">•</span>
+              <span>阅读时间：5分钟</span>
+              <span className="mx-3">•</span>
+              <span>作者：SheetAlly团队</span>
+            </div>
+          </header>
+
+          {/* 文章内容 */}
+          <div className="rounded-lg bg-white p-8 shadow-md">
+            {/* 文章摘要 */}
+            <div className="mb-8 border-l-4 border-blue-400 bg-blue-50 p-4">
+              <h2 className="mb-2 font-semibold text-blue-800">📝 本文要点</h2>
+              <ul className="space-y-1 text-blue-700">
+                <li>• 揭秘Excel原生删除重复项功能的3大局限性</li>
+                <li>• 学会AI智能去重+数据聚合的正确姿势</li>
+                <li>• 掌握销售数据、客户记录等实战场景应用</li>
+                <li>• 免费体验SheetAlly智能去重工具</li>
+              </ul>
+            </div>
+
+            {/* 痛点分析 */}
+            <section className="mb-8">
+              <h2 className="mb-4 text-2xl font-semibold text-gray-800">
+                Excel删除重复项的3大痛点，你中了几个？
+              </h2>
+              <p className="mb-4 text-gray-600">
+                Excel的"删除重复项"功能可以说是数据处理中的常客，但你有没有遇到过这些令人抓狂的情况：
+              </p>
+
+              <div className="mb-6 space-y-4">
+                <div className="border-l-4 border-red-400 bg-red-50 p-4 pl-4">
+                  <h3 className="mb-2 font-semibold text-red-800">😤 痛点1：无法指定保留哪条记录</h3>
+                  <p className="text-sm text-red-700">
+                    同一个客户有多条交易记录，你想保留最新的那条，但Excel只会随机保留一条。
+                    结果：重要的最新信息可能被删除，旧数据反而被保留。
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-red-400 bg-red-50 p-4 pl-4">
+                  <h3 className="mb-2 font-semibold text-red-800">😩 痛点2：无法同时统计聚合数据</h3>
+                  <p className="text-sm text-red-700">
+                    删除重复行的同时，你还想知道每个客户的历史交易总金额，但Excel做不到。
+                    结果：需要额外用透视表或公式计算，步骤繁琐容易出错。
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-red-400 bg-red-50 p-4 pl-4">
+                  <h3 className="mb-2 font-semibold text-red-800">😵 痛点3：操作步骤多且不可复用</h3>
+                  <p className="text-sm text-red-700">
+                    需要先排序、再去重、最后手动计算，每次处理新数据都要重复这些步骤。
+                    结果：效率低下，而且容易漏掉某个步骤导致结果错误。
+                  </p>
+                </div>
+              </div>
+
+              <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4">
+                <h4 className="mb-2 font-semibold text-yellow-800">💡 你是否也遇到过？</h4>
+                <p className="text-sm text-yellow-700">
+                  据调查，72%的Excel用户都遭遇过"公式噩梦"，其中数据去重是最常见的痛点之一。
+                  传统方法不仅步骤繁琐，而且结果往往不如人意。
+                </p>
+              </div>
+            </section>
+
+            {/* 解决方案介绍 */}
+            <section className="mb-8">
+              <h2 className="mb-4 text-2xl font-semibold text-gray-800">
+                AI智能去重：一键解决所有痛点
+              </h2>
+
+              <p className="mb-6 text-gray-600">
+                SheetAlly的AI智能去重功能，完美解决了Excel原生功能的所有局限性。
+                让我们看看它是如何做到的：
+              </p>
+
+              <div className="mb-6 grid gap-6 md:grid-cols-2">
+                <div className="rounded-lg border border-green-200 bg-green-50 p-4">
+                  <h3 className="mb-2 font-semibold text-green-800">✅ 智能保留策略</h3>
+                  <ul className="space-y-1 text-sm text-green-700">
+                    <li>• 按日期字段保留最新记录</li>
+                    <li>• 按版本号保留最高版本</li>
+                    <li>• 按分数保留最优记录</li>
+                    <li>• 支持多字段组合去重</li>
+                  </ul>
+                </div>
+                <div className="rounded-lg border border-green-200 bg-green-50 p-4">
+                  <h3 className="mb-2 font-semibold text-green-800">✅ 自动数据聚合</h3>
+                  <ul className="space-y-1 text-sm text-green-700">
+                    <li>• 金额自动求和汇总</li>
+                    <li>• 数量自动计数统计</li>
+                    <li>• 支持最大值、最小值</li>
+                    <li>• 一键生成聚合列</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
+                <h4 className="mb-2 font-semibold text-blue-800">🚀 操作只需3步</h4>
+                <ol className="space-y-1 text-sm text-blue-700">
+                  <li>1. 上传包含重复数据的Excel文件</li>
+                  <li>2. 选择去重键和保留策略（AI会智能建议）</li>
+                  <li>3. 预览结果并一键导出处理后的文件</li>
+                </ol>
+              </div>
+            </section>
+
+            {/* 实战案例 */}
+            <section className="mb-8">
+              <h2 className="mb-4 text-2xl font-semibold text-gray-800">
+                实战案例：销售数据去重保留最新
+              </h2>
+
+              <p className="mb-4 text-gray-600">
+                让我们用一个真实的销售数据案例，看看AI智能去重的威力：
+              </p>
+
+              <div className="mb-6">
+                <h3 className="mb-3 text-lg font-semibold">📊 原始数据（有重复）</h3>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full border border-gray-200 bg-white">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="border-b px-4 py-2 text-left">客户ID</th>
+                        <th className="border-b px-4 py-2 text-left">客户名称</th>
+                        <th className="border-b px-4 py-2 text-left">交易日期</th>
+                        <th className="border-b px-4 py-2 text-left">交易金额</th>
+                        <th className="border-b px-4 py-2 text-left">产品类型</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className="border-b px-4 py-2">C001</td>
+                        <td className="border-b px-4 py-2">张三公司</td>
+                        <td className="border-b px-4 py-2">2023-05-01</td>
+                        <td className="border-b px-4 py-2">1000</td>
+                        <td className="border-b px-4 py-2">产品A</td>
+                      </tr>
+                      <tr className="bg-yellow-50">
+                        <td className="border-b px-4 py-2">C001</td>
+                        <td className="border-b px-4 py-2">张三公司</td>
+                        <td className="border-b px-4 py-2">2023-05-15</td>
+                        <td className="border-b px-4 py-2">2000</td>
+                        <td className="border-b px-4 py-2">产品B</td>
+                      </tr>
+                      <tr className="bg-yellow-50">
+                        <td className="border-b px-4 py-2">C001</td>
+                        <td className="border-b px-4 py-2">张三公司</td>
+                        <td className="border-b px-4 py-2">2023-05-20</td>
+                        <td className="border-b px-4 py-2">1500</td>
+                        <td className="border-b px-4 py-2">产品C</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p className="mt-2 text-sm text-gray-500">
+                  ⚠️ 客户C001有3条交易记录，需要保留最新的同时汇总历史交易金额
+                </p>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="mb-3 text-lg font-semibold">🎯 处理后数据（智能去重+聚合）</h3>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full border border-gray-200 bg-white">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="border-b px-4 py-2 text-left">客户ID</th>
+                        <th className="border-b px-4 py-2 text-left">客户名称</th>
+                        <th className="border-b px-4 py-2 text-left">最新交易日期</th>
+                        <th className="border-b px-4 py-2 text-left">最新交易金额</th>
+                        <th className="border-b px-4 py-2 text-left">最新产品类型</th>
+                        <th className="border-b bg-green-100 px-4 py-2 text-left">历史总金额</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="bg-green-50">
+                        <td className="border-b px-4 py-2">C001</td>
+                        <td className="border-b px-4 py-2">张三公司</td>
+                        <td className="border-b px-4 py-2">2023-05-20</td>
+                        <td className="border-b px-4 py-2">1500</td>
+                        <td className="border-b px-4 py-2">产品C</td>
+                        <td className="border-b bg-green-100 px-4 py-2 font-semibold">4500</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p className="mt-2 text-sm text-green-600">
+                  ✅ 完美！保留了最新记录，同时自动计算出历史总金额：1000+2000+1500=4500
+                </p>
+              </div>
+            </section>
+
+            {/* 免费体验工具 */}
+            <section className="mb-8">
+              <h2 className="mb-4 text-2xl font-semibold text-gray-800">
+                🎉 立即免费体验AI智能去重
+              </h2>
+              <div className="mb-6 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 p-6">
+                <p className="mb-4 text-gray-700">
+                  看完案例是不是很心动？现在就试试SheetAlly的AI智能去重功能吧！
+                  完全免费，无需注册，上传文件即可体验。
+                </p>
+                <ToolWorkbench />
+              </div>
+            </section>
+
+            {/* 常见问题 */}
+            <section className="mb-8">
+              <h2 className="mb-4 text-2xl font-semibold text-gray-800">
+                🤔 常见问题解答
+              </h2>
+              <div className="space-y-4">
+                <div className="rounded-lg border border-gray-200 p-4">
+                  <h3 className="mb-2 font-semibold">Q: 如果我的数据没有明确的时间字段怎么办？</h3>
+                  <p className="text-sm text-gray-600">
+                    A: 系统支持按任意字段排序去重，比如版本号、序号、分数等。如果没有排序字段，也可以简单按首次出现的记录保留。
+                  </p>
+                </div>
+                <div className="rounded-lg border border-gray-200 p-4">
+                  <h3 className="mb-2 font-semibold">Q: 聚合功能支持哪些计算方式？</h3>
+                  <p className="text-sm text-gray-600">
+                    A: 支持求和(SUM)、计数(COUNT)、最大值(MAX)、最小值(MIN)、平均值(AVG)等常用聚合函数。
+                  </p>
+                </div>
+                <div className="rounded-lg border border-gray-200 p-4">
+                  <h3 className="mb-2 font-semibold">Q: 处理大文件会很慢吗？</h3>
+                  <p className="text-sm text-gray-600">
+                    A: 系统经过优化，通常几万行数据在几秒内就能处理完成。超大文件会显示处理进度，让你实时了解处理状态。
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* 总结 */}
+            <section>
+              <h2 className="mb-4 text-2xl font-semibold text-gray-800">
+                💡 总结
+              </h2>
+              <div className="rounded-lg bg-gray-50 p-6">
+                <p className="mb-4 text-gray-700">
+                  Excel数据去重看似简单，但要做到既保留正确的记录又能统计聚合数据，传统方法就显得力不从心了。
+                  SheetAlly的AI智能去重功能，不仅解决了这些痛点，还大大提升了工作效率。
+                </p>
+                <ul className="space-y-2 text-gray-700">
+                  <li>
+                    •
+                    <strong>告别随机保留：</strong>
+                    精确控制保留哪条记录
+                  </li>
+                  <li>
+                    •
+                    <strong>一键双重处理：</strong>
+                    去重+聚合同时完成
+                  </li>
+                  <li>
+                    •
+                    <strong>流程可复用：</strong>
+                    生成配方，批量处理同类数据
+                  </li>
+                  <li>
+                    •
+                    <strong>结果可预览：</strong>
+                    执行前看清每一处变更
+                  </li>
+                </ul>
+              </div>
+            </section>
+          </div>
+
+          {/* 相关文章推荐 */}
+          <aside className="mt-12">
+            <h2 className="mb-6 text-xl font-semibold text-gray-800">相关文章推荐</h2>
+            <div className="grid gap-4 md:grid-cols-2">
+              <Link href="/blog/excel-merge-different-columns" className="block rounded-lg bg-white p-4 shadow-md transition-shadow hover:shadow-lg">
+                <h3 className="mb-2 font-semibold text-gray-900">Excel表格合并列名不匹配？AI智能映射让VLOOKUP失业</h3>
+                <p className="text-sm text-gray-600">VLOOKUP遇到列名不匹配就束手无策？学会AI智能列名匹配...</p>
+              </Link>
+              <Link href="/blog/excel-text-split-name-address" className="block rounded-lg bg-white p-4 shadow-md transition-shadow hover:shadow-lg">
+                <h3 className="mb-2 font-semibold text-gray-900">Excel姓名分列总出错？中英文姓名一键拆分技巧</h3>
+                <p className="text-sm text-gray-600">告别复杂的正则表达式，一键完成中英文姓名、地址...</p>
+              </Link>
+            </div>
+          </aside>
+        </article>
+      </div>
+    </div>
+  );
+}

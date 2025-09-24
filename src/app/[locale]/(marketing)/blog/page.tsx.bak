@@ -1,0 +1,244 @@
+import type { Metadata } from 'next';
+import { setRequestLocale } from 'next-intl/server';
+import Link from 'next/link';
+
+type IBlogProps = {
+  params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: 'Excel数据处理技巧与教程 - SheetAlly博客',
+    description: 'Excel去重保留最新、表格合并、文本拆分、格式标准化等数据处理技巧。告别Excel痛点，提升工作效率的专业教程和案例分享。',
+    keywords: 'Excel教程,Excel数据处理,Excel技巧,Excel去重,Excel合并,Excel清洗,Excel自动化,Excel AI,数据处理教程',
+    openGraph: {
+      title: 'Excel数据处理技巧与教程 - SheetAlly博客',
+      description: 'Excel数据处理专业教程，告别Excel痛点，提升工作效率。',
+      type: 'website',
+      url: 'https://sheetally.com/blog',
+      siteName: 'SheetAlly',
+    },
+    alternates: {
+      canonical: 'https://sheetally.com/blog',
+    },
+  };
+}
+
+export default async function Blog(props: IBlogProps) {
+  const { locale } = await props.params;
+  setRequestLocale(locale);
+
+  const blogPosts = [
+    {
+      slug: 'excel-dedupe-keep-latest-guide',
+      title: 'Excel去重但要保留最新记录？这个AI工具3秒搞定',
+      description: '告别Excel原生删除重复项的限制，学会智能去重+数据聚合，适用于销售数据、客户记录等场景。',
+      category: '数据去重',
+      readTime: '5分钟',
+      publishDate: '2024-01-15',
+      featured: true,
+    },
+    {
+      slug: 'excel-merge-different-columns',
+      title: 'Excel表格合并列名不匹配？AI智能映射让VLOOKUP失业',
+      description: 'VLOOKUP遇到列名不匹配就束手无策？学会AI智能列名匹配，轻松合并异构表格。',
+      category: '表格合并',
+      readTime: '7分钟',
+      publishDate: '2024-01-12',
+      featured: true,
+    },
+    {
+      slug: 'excel-text-split-name-address',
+      title: 'Excel姓名分列总出错？中英文姓名一键拆分技巧',
+      description: '告别复杂的正则表达式，一键完成中英文姓名、地址、电话等文本的智能拆分。',
+      category: '文本处理',
+      readTime: '6分钟',
+      publishDate: '2024-01-10',
+      featured: true,
+    },
+    {
+      slug: 'excel-date-format-standardize',
+      title: 'Excel日期格式五花八门？一键统一为标准格式',
+      description: '解决Excel中日期格式混乱的痛点，支持多种格式识别，批量转换为标准格式。',
+      category: '格式标准化',
+      readTime: '4分钟',
+      publishDate: '2024-01-08',
+      featured: false,
+    },
+    {
+      slug: 'excel-version-diff-compare',
+      title: 'Excel文件版本对比找差异，不用肉眼一个个看了',
+      description: '团队协作必备技能，智能对比Excel文件差异，自动生成详细的变更报告。',
+      category: '版本管理',
+      readTime: '8分钟',
+      publishDate: '2024-01-05',
+      featured: false,
+    },
+    {
+      slug: 'excel-pain-points-analysis',
+      title: '财务人员必看：Excel数据清洗的5大痛点及AI解决方案',
+      description: '深度分析Excel数据处理中的常见痛点，介绍如何用AI工具提升工作效率。',
+      category: '行业应用',
+      readTime: '10分钟',
+      publishDate: '2024-01-03',
+      featured: false,
+    },
+  ];
+
+  const categories = ['全部', '数据去重', '表格合并', '文本处理', '格式标准化', '版本管理', '行业应用'];
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
+        {/* 页面标题 */}
+        <div className="mb-12 text-center">
+          <h1 className="mb-4 text-4xl font-bold text-gray-900">
+            Excel数据处理技巧与教程
+          </h1>
+          <p className="mx-auto max-w-3xl text-xl text-gray-600">
+            告别Excel数据处理痛点，学习专业的数据清洗、合并、拆分技巧。
+            提升工作效率，让复杂的Excel操作变得简单。
+          </p>
+        </div>
+
+        {/* 分类导航 */}
+        <div className="mb-8">
+          <div className="flex flex-wrap justify-center gap-2">
+            {categories.map(category => (
+              <button
+                key={category}
+                className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                  category === '全部'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* 精选文章 */}
+        <div className="mb-12">
+          <h2 className="mb-6 text-2xl font-semibold text-gray-800">精选文章</h2>
+          <div className="grid gap-6 md:grid-cols-3">
+            {blogPosts.filter(post => post.featured).map(post => (
+              <article key={post.slug} className="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg">
+                <div className="p-6">
+                  <div className="mb-3 flex items-center justify-between">
+                    <span className="rounded bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+                      {post.category}
+                    </span>
+                    <span className="text-sm text-gray-500">{post.readTime}</span>
+                  </div>
+                  <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-gray-900">
+                    <Link href={`/blog/${post.slug}`} className="hover:text-blue-600">
+                      {post.title}
+                    </Link>
+                  </h3>
+                  <p className="mb-4 line-clamp-3 text-sm text-gray-600">
+                    {post.description}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-500">{post.publishDate}</span>
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="text-sm font-medium text-blue-600 hover:text-blue-800"
+                    >
+                      阅读更多 →
+                    </Link>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        {/* 全部文章 */}
+        <div>
+          <h2 className="mb-6 text-2xl font-semibold text-gray-800">全部文章</h2>
+          <div className="grid gap-6">
+            {blogPosts.map(post => (
+              <article key={post.slug} className="rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-lg">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="mb-3 flex items-center">
+                      <span className="mr-3 rounded bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
+                        {post.category}
+                      </span>
+                      <span className="text-sm text-gray-500">{post.publishDate}</span>
+                      <span className="mx-2 text-gray-300">•</span>
+                      <span className="text-sm text-gray-500">{post.readTime}</span>
+                    </div>
+                    <h3 className="mb-2 text-xl font-semibold text-gray-900">
+                      <Link href={`/blog/${post.slug}`} className="hover:text-blue-600">
+                        {post.title}
+                      </Link>
+                    </h3>
+                    <p className="mb-4 text-gray-600">
+                      {post.description}
+                    </p>
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="inline-flex items-center font-medium text-blue-600 hover:text-blue-800"
+                    >
+                      阅读全文
+                      <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        {/* 相关工具推荐 */}
+        <div className="mt-12 rounded-lg bg-white p-8 shadow-md">
+          <h2 className="mb-6 text-center text-2xl font-semibold text-gray-800">
+            推荐Excel工具
+          </h2>
+          <div className="grid gap-4 md:grid-cols-5">
+            <Link
+              href="/tools/deduplicate-keep-latest"
+              className="rounded-lg border border-gray-200 p-4 text-center transition-all hover:border-blue-300 hover:shadow-md"
+            >
+              <div className="mb-2 text-2xl">🗑️</div>
+              <h3 className="text-sm font-medium">Excel去重保留最新</h3>
+            </Link>
+            <Link
+              href="/tools/merge-sheets-mapping"
+              className="rounded-lg border border-gray-200 p-4 text-center transition-all hover:border-blue-300 hover:shadow-md"
+            >
+              <div className="mb-2 text-2xl">🔗</div>
+              <h3 className="text-sm font-medium">Excel表格智能合并</h3>
+            </Link>
+            <Link
+              href="/tools/text-clean-split"
+              className="rounded-lg border border-gray-200 p-4 text-center transition-all hover:border-blue-300 hover:shadow-md"
+            >
+              <div className="mb-2 text-2xl">✂️</div>
+              <h3 className="text-sm font-medium">Excel文本拆分清洗</h3>
+            </Link>
+            <Link
+              href="/tools/date-currency-normalize"
+              className="rounded-lg border border-gray-200 p-4 text-center transition-all hover:border-blue-300 hover:shadow-md"
+            >
+              <div className="mb-2 text-2xl">📅</div>
+              <h3 className="text-sm font-medium">Excel格式标准化</h3>
+            </Link>
+            <Link
+              href="/tools/excel-diff"
+              className="rounded-lg border border-gray-200 p-4 text-center transition-all hover:border-blue-300 hover:shadow-md"
+            >
+              <div className="mb-2 text-2xl">⚖️</div>
+              <h3 className="text-sm font-medium">Excel版本差异对比</h3>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

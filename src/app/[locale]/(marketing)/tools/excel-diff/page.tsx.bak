@@ -1,0 +1,421 @@
+import type { Metadata } from 'next';
+import { setRequestLocale } from 'next-intl/server';
+import { ToolWorkbench } from '@/components/ToolWorkbench';
+import { SEO_KEYWORDS_CORE, SEO_KEYWORDS_DIFF } from '@/lib/seo-keywords';
+
+type IToolProps = {
+  params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: 'Excel文件版本对比工具 - 快速找出数据差异 | SheetAlly',
+    description: 'Excel版本对比不用肉眼看！智能对比两个Excel文件差异，自动生成新增、删除、修改三类差异报告。团队协作必备，审计追责利器。',
+    keywords: [...SEO_KEYWORDS_CORE, ...SEO_KEYWORDS_DIFF],
+    openGraph: {
+      title: 'Excel文件版本对比工具 - 快速找出数据差异',
+      description: 'Excel版本对比不用肉眼看！智能对比两个Excel文件差异，自动生成详细差异报告。',
+      type: 'website',
+      url: 'https://sheetally.com/tools/excel-diff',
+      siteName: 'SheetAlly',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Excel文件版本对比工具',
+      description: 'Excel版本对比不用肉眼看！',
+    },
+    alternates: {
+      canonical: 'https://sheetally.com/tools/excel-diff',
+    },
+  };
+}
+
+export default async function ExcelDiff(props: IToolProps) {
+  const { locale } = await props.params;
+  setRequestLocale(locale);
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8 text-center">
+          <h1 className="mb-4 text-4xl font-bold text-gray-900">
+            Excel版本对比：智能找出数据差异，告别肉眼检查
+          </h1>
+          <p className="mx-auto max-w-3xl text-xl text-gray-600">
+            团队协作中Excel文件经常被修改？担心数据被误改？
+            一键对比两个版本的差异，自动生成新增、删除、修改三类详细报告，让每一处变更都清晰可见。
+          </p>
+        </div>
+
+        {/* 版本对比痛点 */}
+        <div className="mb-8 rounded-lg bg-white p-6 shadow-md">
+          <h2 className="mb-4 text-2xl font-semibold text-gray-800">
+            解决Excel版本管理的5大痛点
+          </h2>
+          <div className="grid gap-4 md:grid-cols-5">
+            <div className="text-center">
+              <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+                <svg className="h-8 w-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </div>
+              <h3 className="mb-2 text-sm font-semibold">肉眼对比费时费力</h3>
+              <p className="text-xs text-gray-600">
+                逐行逐列检查数据变化，容易遗漏关键修改
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+                <svg className="h-8 w-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+              </div>
+              <h3 className="mb-2 text-sm font-semibold">错误难以发现</h3>
+              <p className="text-xs text-gray-600">
+                细微的数值变化、删除的行很容易被忽视
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+                <svg className="h-8 w-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 4v12l-4-2-4 2V4M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h3 className="mb-2 text-sm font-semibold">无法留存记录</h3>
+              <p className="text-xs text-gray-600">
+                对比结果无法保存，难以追溯历史变更
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+                <svg className="h-8 w-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <h3 className="mb-2 text-sm font-semibold">团队协作混乱</h3>
+              <p className="text-xs text-gray-600">
+                多人修改同一文件，不知道谁改了什么
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+                <svg className="h-8 w-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <h3 className="mb-2 text-sm font-semibold">审计追责困难</h3>
+              <p className="text-xs text-gray-600">
+                数据异常时难以快速定位问题和责任人
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* 智能对比解决方案 */}
+        <div className="mb-8 rounded-lg bg-white p-6 shadow-md">
+          <h2 className="mb-4 text-2xl font-semibold text-gray-800">
+            智能对比解决方案
+          </h2>
+          <div className="grid gap-8 md:grid-cols-3">
+            <div className="text-center">
+              <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
+                <svg className="h-10 w-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="mb-3 text-lg font-semibold text-green-600">⚡ 秒级智能对比</h3>
+              <p className="text-sm text-gray-600">
+                上传两个Excel文件，系统自动按主键对齐数据，智能识别所有差异点，
+                比手工检查快100倍以上。
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-blue-100">
+                <svg className="h-10 w-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 className="mb-3 text-lg font-semibold text-blue-600">📊 三表详细报告</h3>
+              <p className="text-sm text-gray-600">
+                自动生成新增、删除、修改三张详细报告表，
+                每处变更都有old→new对比，一目了然。
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-purple-100">
+                <svg className="h-10 w-10 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                </svg>
+              </div>
+              <h3 className="mb-3 text-lg font-semibold text-purple-600">📈 统计概览</h3>
+              <p className="text-sm text-gray-600">
+                提供变更统计概览：新增X行、删除Y行、修改Z个单元格，
+                帮助快速评估变更影响范围。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* 对比报告展示 */}
+        <div className="mb-8 rounded-lg bg-white p-6 shadow-md">
+          <h2 className="mb-4 text-2xl font-semibold text-gray-800">
+            对比报告详解
+          </h2>
+          <div className="space-y-6">
+            <div className="rounded-lg border border-green-200 bg-green-50 p-4">
+              <div className="mb-3 flex items-center">
+                <div className="mr-3 flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white">
+                  <span className="text-sm font-bold">+</span>
+                </div>
+                <h3 className="text-lg font-semibold text-green-700">新增数据报告 (Added)</h3>
+              </div>
+              <p className="mb-3 text-gray-700">
+                显示新版本中有但旧版本中没有的数据行，帮助识别新添加的记录。
+              </p>
+              <div className="rounded border bg-white p-3">
+                <div className="text-sm">
+                  <div className="mb-2 grid grid-cols-4 gap-2 font-medium">
+                    <span>客户ID</span>
+                    <span>客户名称</span>
+                    <span>联系电话</span>
+                    <span>创建日期</span>
+                  </div>
+                  <div className="grid grid-cols-4 gap-2 text-green-600">
+                    <span>C001</span>
+                    <span>新客户A</span>
+                    <span>138****1234</span>
+                    <span>2023-05-15</span>
+                  </div>
+                  <div className="grid grid-cols-4 gap-2 text-green-600">
+                    <span>C002</span>
+                    <span>新客户B</span>
+                    <span>139****5678</span>
+                    <span>2023-05-16</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-red-200 bg-red-50 p-4">
+              <div className="mb-3 flex items-center">
+                <div className="mr-3 flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white">
+                  <span className="text-sm font-bold">−</span>
+                </div>
+                <h3 className="text-lg font-semibold text-red-700">删除数据报告 (Removed)</h3>
+              </div>
+              <p className="mb-3 text-gray-700">
+                显示旧版本中有但新版本中没有的数据行，帮助识别被删除的记录。
+              </p>
+              <div className="rounded border bg-white p-3">
+                <div className="text-sm">
+                  <div className="mb-2 grid grid-cols-4 gap-2 font-medium">
+                    <span>客户ID</span>
+                    <span>客户名称</span>
+                    <span>联系电话</span>
+                    <span>状态</span>
+                  </div>
+                  <div className="grid grid-cols-4 gap-2 text-red-600 line-through">
+                    <span>C999</span>
+                    <span>已删除客户</span>
+                    <span>138****0000</span>
+                    <span>已停用</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4">
+              <div className="mb-3 flex items-center">
+                <div className="mr-3 flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500 text-white">
+                  <span className="text-sm font-bold">~</span>
+                </div>
+                <h3 className="text-lg font-semibold text-yellow-700">修改数据报告 (Modified)</h3>
+              </div>
+              <p className="mb-3 text-gray-700">
+                显示两个版本中都存在但内容有变化的数据行，详细展示old→new的变化。
+              </p>
+              <div className="rounded border bg-white p-3">
+                <div className="text-sm">
+                  <div className="mb-2 grid grid-cols-5 gap-2 font-medium">
+                    <span>客户ID</span>
+                    <span>字段名</span>
+                    <span>旧值</span>
+                    <span>→</span>
+                    <span>新值</span>
+                  </div>
+                  <div className="grid grid-cols-5 gap-2">
+                    <span>C100</span>
+                    <span>联系电话</span>
+                    <span className="text-red-600">138****1111</span>
+                    <span>→</span>
+                    <span className="text-green-600">139****2222</span>
+                  </div>
+                  <div className="grid grid-cols-5 gap-2">
+                    <span>C100</span>
+                    <span>信用等级</span>
+                    <span className="text-red-600">B</span>
+                    <span>→</span>
+                    <span className="text-green-600">A</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 使用场景 */}
+        <div className="mb-8 rounded-lg bg-white p-6 shadow-md">
+          <h2 className="mb-4 text-2xl font-semibold text-gray-800">
+            典型使用场景
+          </h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="space-y-4">
+              <div className="border-l-4 border-blue-500 pl-4">
+                <h3 className="mb-2 text-lg font-semibold">🤝 团队协作管理</h3>
+                <p className="text-gray-600">
+                  多人编辑同一个Excel文件后，用版本对比快速识别每个人的修改内容，
+                  避免重要数据被意外删除或修改。
+                </p>
+              </div>
+              <div className="border-l-4 border-green-500 pl-4">
+                <h3 className="mb-2 text-lg font-semibold">📊 数据质量监控</h3>
+                <p className="text-gray-600">
+                  定期对比业务数据的历史版本，监控关键指标的变化趋势，
+                  及时发现数据异常和质量问题。
+                </p>
+              </div>
+              <div className="border-l-4 border-purple-500 pl-4">
+                <h3 className="mb-2 text-lg font-semibold">⚖️ 审计合规检查</h3>
+                <p className="text-gray-600">
+                  在财务审计、合规检查时，快速对比不同时期的数据版本，
+                  生成详细的变更报告作为审计证据。
+                </p>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div className="border-l-4 border-orange-500 pl-4">
+                <h3 className="mb-2 text-lg font-semibold">🔒 安全事件调查</h3>
+                <p className="text-gray-600">
+                  当发现数据被恶意篡改时，通过版本对比快速定位被修改的具体内容，
+                  为安全事件调查提供详细线索。
+                </p>
+              </div>
+              <div className="border-l-4 border-red-500 pl-4">
+                <h3 className="mb-2 text-lg font-semibold">🔄 变更管理流程</h3>
+                <p className="text-gray-600">
+                  在系统升级、数据迁移等重要变更前后，对比数据差异，
+                  验证变更是否按预期执行。
+                </p>
+              </div>
+              <div className="border-l-4 border-teal-500 pl-4">
+                <h3 className="mb-2 text-lg font-semibold">📈 业务分析支持</h3>
+                <p className="text-gray-600">
+                  对比不同时间点的业务数据，分析客户流失、产品变化等业务趋势，
+                  为决策提供数据支持。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 工具操作区域 */}
+        <ToolWorkbench />
+
+        {/* 对比算法说明 */}
+        <div className="mt-8 rounded-lg bg-white p-6 shadow-md">
+          <h2 className="mb-4 text-2xl font-semibold text-gray-800">
+            智能对比算法
+          </h2>
+          <div className="grid gap-8 md:grid-cols-2">
+            <div>
+              <h3 className="mb-3 text-lg font-semibold text-blue-600">🔗 主键智能识别</h3>
+              <div className="space-y-3">
+                <div>
+                  <h4 className="mb-1 font-medium">自动识别：</h4>
+                  <p className="text-sm text-gray-600">
+                    系统会自动识别"ID"、"编号"、"代码"等可能的主键列，
+                    并分析数据唯一性来确定最佳主键组合。
+                  </p>
+                </div>
+                <div>
+                  <h4 className="mb-1 font-medium">手动指定：</h4>
+                  <p className="text-sm text-gray-600">
+                    如果自动识别不准确，您可以手动选择一个或多个列作为主键，
+                    确保数据对齐的准确性。
+                  </p>
+                </div>
+                <div>
+                  <h4 className="mb-1 font-medium">复合主键：</h4>
+                  <p className="text-sm text-gray-600">
+                    支持多列组合作为主键，如"客户ID+产品编号"的组合键，
+                    适应复杂的业务场景。
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3 className="mb-3 text-lg font-semibold text-green-600">🎯 差异检测精度</h3>
+              <div className="space-y-3">
+                <div>
+                  <h4 className="mb-1 font-medium">数值比较：</h4>
+                  <p className="text-sm text-gray-600">
+                    自动识别数值类型字段，支持浮点数精度设置，
+                    避免因舍入误差导致的误报。
+                  </p>
+                </div>
+                <div>
+                  <h4 className="mb-1 font-medium">文本比较：</h4>
+                  <p className="text-sm text-gray-600">
+                    支持大小写敏感/不敏感比较，自动处理首尾空格，
+                    确保文本比较的准确性。
+                  </p>
+                </div>
+                <div>
+                  <h4 className="mb-1 font-medium">日期比较：</h4>
+                  <p className="text-sm text-gray-600">
+                    智能识别日期格式，统一转换后比较，
+                    避免格式差异导致的误判。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* FAQ */}
+        <div className="mt-8 rounded-lg bg-white p-6 shadow-md">
+          <h2 className="mb-6 text-2xl font-semibold text-gray-800">
+            常见问题
+          </h2>
+          <div className="space-y-4">
+            <div>
+              <h3 className="mb-2 font-semibold">Q: 如果两个文件的列结构不同怎么办？</h3>
+              <p className="text-gray-600">
+                A: 系统会自动处理列结构差异。新增的列会在"新增"报告中体现，删除的列会在"删除"报告中体现，共同列会进行内容比较。
+              </p>
+            </div>
+            <div>
+              <h3 className="mb-2 font-semibold">Q: 可以对比多个工作表吗？</h3>
+              <p className="text-gray-600">
+                A: 当前版本支持对比单个工作表。如果文件包含多个工作表，您可以选择要对比的具体工作表，或分别对比多个工作表。
+              </p>
+            </div>
+            <div>
+              <h3 className="mb-2 font-semibold">Q: 对比结果可以导出吗？</h3>
+              <p className="text-gray-600">
+                A: 可以。系统会生成包含三个工作表(Added/Removed/Modified)的Excel文件，同时提供JSON格式的详细报告供程序化处理。
+              </p>
+            </div>
+            <div>
+              <h3 className="mb-2 font-semibold">Q: 支持大文件对比吗？</h3>
+              <p className="text-gray-600">
+                A: 支持，但建议单个文件不超过25MB。对于特大文件，系统会提供进度显示，确保对比过程的可见性。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

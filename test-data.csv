@@ -1,0 +1,11 @@
+CustomerID,OrderID,UpdatedAt,Amount,FullName,Email,Notes,Address
+C001,O1001,2025-07-01 08:00,200.00,John Smith,john.smith@email.com,"PAID
+ok","123 Main St, Springfield, IL 62704"
+C002,O1002,2025-07-02 09:15,£560.50,Jane Doe,JANE.DOE@EMAIL.COM,PROCESSING,"456 Oak Ave, London, SW1A 1AA"
+C003,O1003,2025-07-03 09:00,¥3100,王 小明,wang.xiaoming@email.com,"	SHIPPED	","789 Pine Rd, Tokyo, 100-0001"
+C003,O1003,2025-07-01 10:00,¥2000,王小明,wang.xiaoming@email.com,DUPLICATE OLD,"789 Pine Rd, Tokyo, 100-0001"
+C001,O1004,2025-07-04 11:30,500.75,John Smith,john.smith@email.com,CONFIRMED,"123 Main St, Springfield, IL 62704"
+C004,O1005,2025-07-05 14:20,"USD 5,600.00",Li Wei,li.wei@invalid,PENDING,"45 King Rd, London, SW1A 1AA"
+C002,O1006,Jul 6 2025,£890.00,Jane Doe,jane.doe@email.com,COMPLETED,"456 Oak Ave, London, SW1A 1AA"
+C005,O1007,2025.07.07,50,Bob Johnson,bob@email,FAILED,"321 Elm St, Chicago, IL 60601"
+C003,O1008,06-07-2025,800,王 小明,wang.xiaoming@email.com,NEW ORDER,"789 Pine Rd, Tokyo, 100-0001"
