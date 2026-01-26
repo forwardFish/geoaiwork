@@ -76,7 +76,7 @@
     "@lingual/i18n-check": "^0.8.4",
     "@next/bundle-analyzer": "^15.4.5",
     "@next/eslint-plugin-next": "^15.4.5",
-    "@playwright/test": "^1.54.2",
+    "@playwright/test": "^1.56.1",
     "@spotlightjs/spotlight": "^3.0.1",
     "@storybook/addon-a11y": "^9.1.0",
     "@storybook/addon-docs": "^9.1.0",
